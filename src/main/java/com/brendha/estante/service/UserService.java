@@ -4,14 +4,21 @@ import com.brendha.estante.infrastructure.entities.User;
 import com.brendha.estante.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
 
-    public void createUser(User user) {
+    public User createUser(User user) {
+        if (userRepository.existsByEmail(user.getEmail()).isPresent()) {
+            // terminar logica de existencia do usuario.
+            // Precisa saber o que retornar para que st 500 não seja enviado na req
+        }
+
         userRepository.saveAndFlush(user);
+        return user;
     }
 
     public User findUserById(Integer id) {
@@ -20,13 +27,13 @@ public class UserService {
         );
     }
 
-    public void updateUserById(Integer id, User recivedUser) {
+    public void updateUserById(Integer id, User receivedUser) {
         User currentUser = findUserById(id);
 
-        User updatedUser = recivedUser.builder()
-                .email(recivedUser.getEmail() != null ? recivedUser.getEmail() : currentUser.getEmail())
-                .name(recivedUser.getName() != null ? recivedUser.getName() : currentUser.getName())
-                .id(recivedUser.getId())
+        User updatedUser = User.builder()
+                .email(receivedUser.getEmail() != null ? receivedUser.getEmail() : currentUser.getEmail())
+                .name(receivedUser.getName() != null ? receivedUser.getName() : currentUser.getName())
+                .id(receivedUser.getId())
                 .build();
 
         userRepository.save(updatedUser);
