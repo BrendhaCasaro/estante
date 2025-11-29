@@ -13,6 +13,8 @@ public class UserService {
 
     public User createUser(User user) {
         if (userRepository.existsByEmail(user.getEmail()).isPresent()) {
+            // retornar uma exception de usuário ja existente.
+            return user;
             // terminar logica de existencia do usuario.
             // Precisa saber o que retornar para que st 500 não seja enviado na req
         }
