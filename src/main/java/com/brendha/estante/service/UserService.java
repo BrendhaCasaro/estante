@@ -12,10 +12,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User createUser(User user) {
-        if (userRepository.existsByEmail(user.getEmail()).isPresent()) {
-            // retornar uma exception de usuário ja existente.
-            // terminar logica de existencia do usuario.
-            // Precisa saber o que retornar para que st 500 não seja enviado na req
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("User already exists");
         }
 
         userRepository.saveAndFlush(user);
@@ -31,13 +29,15 @@ public class UserService {
     public void updateUserById(Integer id, User receivedUser) {
         User currentUser = findUserById(id);
 
-        User updatedUser = User.builder()
-                .email(receivedUser.getEmail() != null ? receivedUser.getEmail() : currentUser.getEmail())
-                .name(receivedUser.getName() != null ? receivedUser.getName() : currentUser.getName())
-                .id(receivedUser.getId())
-                .build();
+        if (receivedUser.getEmail() != null) {
+            currentUser.setEmail(receivedUser.getEmail());
+        }
 
-        userRepository.save(updatedUser);
+        if (receivedUser.getName() != null) {
+            currentUser.setName(receivedUser.getName());
+        }
+
+        userRepository.save(currentUser);
     }
 
     public void deleteUserById(Integer id) {

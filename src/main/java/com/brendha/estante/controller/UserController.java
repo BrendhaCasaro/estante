@@ -17,13 +17,16 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        User savedUser = userService.createUser(user);
+        User savedUser;
+        try {
+            savedUser = userService.createUser(user);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
 
         URI location = URI.create("/users?id=" + savedUser.getId());
 
         return ResponseEntity.created(location).body(savedUser);
-
-        // retornar algum status code para quando o user ja existe
     }
 
     @GetMapping
