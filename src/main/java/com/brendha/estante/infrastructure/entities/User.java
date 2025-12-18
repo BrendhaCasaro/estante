@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.awt.print.Book;
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -23,4 +26,10 @@ public class User {
     @Column(name = "name")
     private String name;
 
+    @ManyToMany @JoinTable(
+            name = "users_books",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
+    private List<Book> books;
 }
