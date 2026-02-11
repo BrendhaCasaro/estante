@@ -26,6 +26,7 @@ public class Book {
     private String author;
 
     @ManyToMany(mappedBy = "books")
+
     private List<User> users;
 
 }
