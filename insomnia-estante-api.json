@@ -1,0 +1,190 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-02-15T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "wrk_estante_api",
+      "_type": "workspace",
+      "name": "Estante API",
+      "description": "Colecao para testar endpoints de users, books e relacionamento user-book.",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_estante_base",
+      "_type": "environment",
+      "parentId": "wrk_estante_api",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8080"
+      }
+    },
+    {
+      "_id": "fld_users",
+      "_type": "request_group",
+      "parentId": "wrk_estante_api",
+      "name": "Users"
+    },
+    {
+      "_id": "fld_books",
+      "_type": "request_group",
+      "parentId": "wrk_estante_api",
+      "name": "Books"
+    },
+    {
+      "_id": "fld_library",
+      "_type": "request_group",
+      "parentId": "wrk_estante_api",
+      "name": "Library (User-Book)"
+    },
+    {
+      "_id": "req_users_create",
+      "_type": "request",
+      "parentId": "fld_users",
+      "name": "Create User",
+      "method": "POST",
+      "url": "{{ _.base_url }}/users",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Brendha Silva\",\n  \"email\": \"brendha.silva@email.com\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_users_get_by_id",
+      "_type": "request",
+      "parentId": "fld_users",
+      "name": "Get User By ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/users?id=1"
+    },
+    {
+      "_id": "req_users_update",
+      "_type": "request",
+      "parentId": "fld_users",
+      "name": "Update User",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/users?id=1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Brendha Santos\",\n  \"email\": \"brendha.santos@email.com\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_users_delete",
+      "_type": "request",
+      "parentId": "fld_users",
+      "name": "Delete User",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/users?id=1"
+    },
+    {
+      "_id": "req_books_create",
+      "_type": "request",
+      "parentId": "fld_books",
+      "name": "Create Book",
+      "method": "POST",
+      "url": "{{ _.base_url }}/books",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Clean Code\",\n  \"author\": \"Robert C. Martin\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_books_get_by_id",
+      "_type": "request",
+      "parentId": "fld_books",
+      "name": "Get Book By ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/books?id=1"
+    },
+    {
+      "_id": "req_books_update",
+      "_type": "request",
+      "parentId": "fld_books",
+      "name": "Update Book",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/books?id=1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Clean Architecture\",\n  \"author\": \"Robert C. Martin\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_books_delete",
+      "_type": "request",
+      "parentId": "fld_books",
+      "name": "Delete Book",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/books?id=1"
+    },
+    {
+      "_id": "req_library_add_book_to_user",
+      "_type": "request",
+      "parentId": "fld_library",
+      "name": "Add Book To User",
+      "method": "POST",
+      "url": "{{ _.base_url }}/library",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"bookId\": 1,\n  \"userId\": 1\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_library_remove_book_from_user",
+      "_type": "request",
+      "parentId": "fld_library",
+      "name": "Remove Book From User",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/library",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"bookId\": 1,\n  \"userId\": 1\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_library_list_user_books",
+      "_type": "request",
+      "parentId": "fld_library",
+      "name": "List Books From User",
+      "method": "GET",
+      "url": "{{ _.base_url }}/library?userId=1"
+    }
+  ]
+}

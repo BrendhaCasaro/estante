@@ -1,12 +1,13 @@
 package com.brendha.estante.service;
 
+import com.brendha.estante.infrastructure.entities.Book;
 import com.brendha.estante.infrastructure.entities.User;
 import com.brendha.estante.infrastructure.repository.BookRepository;
 import com.brendha.estante.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,20 +17,34 @@ public class UserBookService {
     final private UserRepository userRepository;
 
     public void addBookToUser(Integer bookId, Integer userId) {
-        if (!userRepository.existsById(userId)) {
-            throw new RuntimeException("User not exists");
-        }
-        User user = userRepository.findById(userId);
+        Optional<User> userOpt = userRepository.findById(userId);
+        User user = userOpt.orElseThrow();
 
-        if (!bookRepository.existsById(bookId)) {
-           throw new RuntimeException("Book not exists");
-        }
-        Book book = bookRepository.findById(bookId);
+        Optional<Book> bookOpt = bookRepository.findById(bookId);
+        Book book = bookOpt.orElseThrow();
 
         user.getBooks().add(book);
 
         userRepository.save(user);
 
+    }
+
+    public void removeBookFromUser(Integer bookId, Integer userId) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        User user = userOpt.orElseThrow();
+
+        Optional<Book> bookOpt = bookRepository.findById(bookId);
+        Book book = bookOpt.orElseThrow();
+
+        user.getBooks().remove(book);
+        userRepository.save(user);
+    }
+
+    public List<Book> listAllBooksFromUser(Integer userId) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        User user = userOpt.orElseThrow();
+
+        return user.getBooks();
     }
 
 }
