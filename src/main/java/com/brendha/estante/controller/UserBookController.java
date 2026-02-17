@@ -1,5 +1,6 @@
 package com.brendha.estante.controller;
 
+import com.brendha.estante.controller.dto.BookResponse;
 import com.brendha.estante.controller.dto.UserBookRequest;
 import com.brendha.estante.infrastructure.entities.Book;
 import com.brendha.estante.service.UserBookService;
@@ -24,7 +25,7 @@ public class UserBookController {
             userBookService.addBookToUser(request.bookId(), request.userId());
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
-            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("User or Book not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User or Book not found");
         }
     }
 
@@ -42,7 +43,8 @@ public class UserBookController {
     public ResponseEntity<?> getBooksFromUser(@RequestParam Integer userId) {
         try {
             List<Book> books = userBookService.listAllBooksFromUser(userId);
-            return ResponseEntity.ok().body(books);
+            List<BookResponse> booksResponse = books.stream().map((book) -> new BookResponse(book.getId(), book.getName(), book.getAuthor())).toList();
+            return ResponseEntity.ok().body(booksResponse);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not exist");
         }

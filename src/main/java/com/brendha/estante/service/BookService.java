@@ -25,7 +25,7 @@ public class BookService {
                 .orElseThrow(() -> new RuntimeException("Book not found"));
     }
 
-    public void updateBookById(Integer id, Book receivedBook) {
+    public Book updateBookById(Integer id, Book receivedBook) {
         Book currentBook = findBookById(id);
 
         if (receivedBook.getName() != null) {
@@ -36,10 +36,12 @@ public class BookService {
             currentBook.setAuthor(receivedBook.getAuthor());
         }
 
-        bookRepository.save(currentBook);
+        return bookRepository.save(currentBook);
     }
 
-    public void deleteBookById(Integer id) {
+    public Book deleteBookById(Integer id) {
+        Book currentBook = findBookById(id);
         bookRepository.deleteById(id);
+        return currentBook;
     }
 }

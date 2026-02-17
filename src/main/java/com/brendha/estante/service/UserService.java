@@ -4,7 +4,6 @@ import com.brendha.estante.infrastructure.entities.User;
 import com.brendha.estante.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +25,7 @@ public class UserService {
         );
     }
 
-    public void updateUserById(Integer id, User receivedUser) {
+    public User updateUserById(Integer id, User receivedUser) {
         User currentUser = findUserById(id);
 
         if (receivedUser.getEmail() != null) {
@@ -37,11 +36,12 @@ public class UserService {
             currentUser.setName(receivedUser.getName());
         }
 
-        userRepository.save(currentUser);
+        return userRepository.save(currentUser);
     }
 
-    public void deleteUserById(Integer id) {
-        // lógica decente de caso queira deletar usuário que não existe
-       userRepository.deleteById(id);
+    public User deleteUserById(Integer id) {
+        User currentUser = findUserById(id);
+        userRepository.deleteById(id);
+        return currentUser;
     }
 }
